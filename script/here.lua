@@ -55,12 +55,12 @@ if isEmulatorOrPC then
     ToggleUI.Parent = PlayerGui
 
     local Button = Instance.new("ImageButton")
-    Button.Size = UDim2.new(0, 80, 0, 80)
+    Button.Size = UDim2.new(0, 50, 0, 50)
     Button.Position = UDim2.new(0, 25, 0, 80)
     Button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    Button.Image = "rbxassetid://71947103252559"
+    Button.Image = ""
     Button.BorderSizePixel = 0
-    Button.Draggable = true
+    Button.Draggable = false
     Button.Parent = ToggleUI
 
     local corner = Instance.new("UICorner")
@@ -104,3 +104,4 @@ if isEmulatorOrPC then
 else
     print("📱 Mobile Mode — open/close button is not displayed")
 end
+
