@@ -7,7 +7,6 @@ local HttpService = game:GetService("HttpService")
 local placeId = game.PlaceId
 
 _G.scripts_key = "daffa"
-local streeLogo = "rbxassetid://71947103252559"
 
 local premiumKeys = {
     "daffa"
@@ -262,13 +261,13 @@ local gameData = gameScripts[placeId]
 local gameName = gameData and gameData.name or "Unknown Game"
 
 StarterGui:SetCore("SendNotification", {
-    Title = "Lexs Hub",
+    Title = "Fall Hub",
     Text = "Detected game: " .. gameName,
     Icon = streeLogo,
     Duration = 3
 })
 StarterGui:SetCore("SendNotification", {
-    Title = "Lexs Hub",
+    Title = "Fall Hub",
     Text = "User Type: " .. userType,
     Icon = streeLogo,
     Duration = 3
@@ -279,7 +278,7 @@ task.wait(2)
 if gameData then
     local scriptUrl = userType == "Premium" and gameData.premium or gameData.free
     StarterGui:SetCore("SendNotification", {
-        Title = "Lexs Hub",
+        Title = "Fall Hub",
         Text = "Loading " .. userType .. " version for " .. gameName .. "...",
         Icon = streeLogo,
         Duration = 3
@@ -292,7 +291,7 @@ if gameData then
         end
     else
         StarterGui:SetCore("SendNotification", {
-            Title = "Lexs Hub",
+            Title = "Fall Hub",
             Text = "Failed to load script for " .. gameName .. "! Check URL or connection.",
             Icon = streeLogo,
             Duration = 4
@@ -300,7 +299,7 @@ if gameData then
     end
 else
     StarterGui:SetCore("SendNotification", {
-        Title = "Lexs Hub",
+        Title = "Fall Hub",
         Text = "Game not supported!",
         Icon = streeLogo,
         Duration = 4
