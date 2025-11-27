@@ -11,19 +11,25 @@ end
 
 local Window = WindUI:CreateWindow({
     Title = "Fall Hub",
-    Icon = "rbxassetid://71947103252559",
-    Author = "Freemium | Fish It",
-    Folder = "Fall_Hub",
+    Author = "Premium | Fish It",
+    Folder = "FALL_HUB",
     Size = UDim2.fromOffset(260, 290),
     Transparent = true,
     Theme = "Dark",
     SideBarWidth = 170,
     HasOutline = true,
+    User = {
+        Enabled = true,
+        Anonymous = false,
+        Callback = function()
+            WindUI:SetTheme("Dark")
+        end,
+    },
 })
 
 Window:EditOpenButton({
     Title = "Fall Hub",
-    Icon = "rbxassetid://71947103252559",
+    Icon = "S3XS",
     CornerRadius = UDim.new(0,16),
     StrokeThickness = 2,
     Color = ColorSequence.new( -- gradient
@@ -36,7 +42,7 @@ Window:EditOpenButton({
 })
 
 Window:Tag({
-    Title = "v0.0.5.7",
+    Title = "V0.0.0.1",
     Color = Color3.fromRGB(255, 255, 255),
     Radius = 17,
 })
@@ -101,6 +107,49 @@ local TagUI = Window:Tag({
     Radius = 0
 })
 
+local Dialog = Window:Dialog({
+    Icon = "circle-plus",
+    Title = "Join Discord",
+    Content = "For Update",
+    Buttons = {
+        {
+            Title = "Copy Discord",
+            Callback = function()
+                if setclipboard then
+                    setclipboard("https://discord.gg/YYbw8KM5x4")
+                    
+                    -- Notify jika berhasil
+                    WindUI:Notify({
+                        Title = "Copied Successfully!",
+                        Content = "The Discord link has been copied to the clipboard.",
+                        Duration = 3,
+                        Icon = "check"
+                    })
+                else
+                    -- Notify jika executor tidak support
+                    WindUI:Notify({
+                        Title = "Fail!",
+                        Content = "Your executor does not support the auto-copy command.",
+                        Duration = 3,
+                        Icon = "x"
+                    })
+                end
+            end,
+        },
+        {
+            Title = "No",
+            Callback = function()
+                WindUI:Notify({
+                    Title = "Canceled",
+                    Content = "You cancel the action.",
+                    Duration = 3,
+                    Icon = "x"
+                })
+            end,
+        },
+    },
+})
+
 WindUI:Notify({
     Title = "Fall Hub Loaded",
     Content = "UI loaded successfully!",
@@ -114,8 +163,8 @@ local Tab1 = Window:Tab({
 })
 
 Tab1:Section({
-    Title = "Community Support",
-    Icon = "hand-fist",
+    Title = "Community",
+    Icon = "chevrons-left-right-ellipsis",
     TextXAlignment = "Left",
     TextSize = 17,
 })
@@ -127,16 +176,20 @@ Tab1:Button({
     Desc = "click to copy link",
     Callback = function()
         if setclipboard then
-            setclipboard("kosong")
+            setclipboard("https://discord.gg/YYbw8KM5x4")
         end
     end
 })
 
-local Section = Tab1:Section({
+Tab1:Divider()
+
+Tab1:Section({
     Title = "Join discord for update",
     TextXAlignment = "Left",
     TextSize = 17,
 })
+
+Tab1:Divider()
 
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
@@ -145,7 +198,7 @@ local Humanoid = Character:WaitForChild("Humanoid")
 
 local Tab2 = Window:Tab({
     Title = "Players",
-    Icon = "user"
+    Icon = "user",
 })
 
 Tab2:Slider({
@@ -176,7 +229,9 @@ Tab2:Slider({
     end
 })
 
-local Button = Tab2:Button({
+Tab2:Divider()
+
+Tab2:Button({
     Title = "Reset Jump Power",
     Desc = "Return Jump Power to normal (50)",
     Callback = function()
@@ -198,10 +253,10 @@ end)
 
 Tab2:Button({
     Title = "Reset Speed",
-    Desc = "Return speed to normal (16)",
+    Desc = "Return speed to normal (18)",
     Callback = function()
-        Humanoid.WalkSpeed = 16
-        print("WalkSpeed reset to default (16)")
+        Humanoid.WalkSpeed = 18
+        print("WalkSpeed reset to default (18)")
     end
 })
 
@@ -209,7 +264,7 @@ Tab2:Divider()
 
 local UserInputService = game:GetService("UserInputService")
 
-local Toggle = Tab2:Toggle({
+Tab2:Toggle({
     Title = "Infinite Jump",
     Desc = "activate to use infinite jump",
     Icon = false,
@@ -235,7 +290,7 @@ UserInputService.JumpRequest:Connect(function()
     end
 end)
 
-local Toggle = Tab2:Toggle({
+Tab2:Toggle({
     Title = "Noclip",
     Desc = "Walk through walls",
     Icon = false,
@@ -357,64 +412,52 @@ end)
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
--- Fungsi untuk stop semua animasi yang sedang berjalan
 local function stopAllAnimations()
-	local char = player.Character or player.CharacterAdded:Wait()
-	local humanoid = char:FindFirstChildOfClass("Humanoid")
-	if humanoid then
-		for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
-			track:Stop(0) -- stop langsung tanpa fade
-		end
-	end
+    local char = player.Character or player.CharacterAdded:Wait()
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+            track:Stop(0)
+        end
+    end
 end
 
--- Fungsi toggle animasi
 local function toggleAnimation(state)
-	local char = player.Character or player.CharacterAdded:Wait()
-	local humanoid = char:FindFirstChildOfClass("Humanoid")
-	local animate = char:FindFirstChild("Animate")
+    local char = player.Character or player.CharacterAdded:Wait()
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
+    local animate = char:FindFirstChild("Animate")
 
-	if state then
-		---------------------------------------------------
-		-- 🟢 MATIKAN SEMUA ANIMASI
-		---------------------------------------------------
-		print("[ANIM] Semua animasi dinonaktifkan")
-		if animate then animate.Disabled = true end
-		stopAllAnimations()
-
-		-- Nonaktifkan animator agar game tidak bisa memutar ulang animasi
-		local animator = humanoid:FindFirstChildOfClass("Animator")
-		if animator then
-			animator:Destroy()
-		end
-	else
-		---------------------------------------------------
-		-- 🔴 AKTIFKAN KEMBALI ANIMASI
-		---------------------------------------------------
-		print("[ANIM] Animasi diaktifkan kembali")
-		if animate then animate.Disabled = false end
-
-		-- Buat ulang Animator agar animasi bisa jalan lagi
-		if humanoid and not humanoid:FindFirstChildOfClass("Animator") then
-			local newAnimator = Instance.new("Animator")
-			newAnimator.Parent = humanoid
-		end
-	end
+    if state then
+        if animate then animate.Disabled = true end
+        stopAllAnimations()
+        local animator = humanoid:FindFirstChildOfClass("Animator")
+        if animator then
+            animator:Destroy()
+        end
+    else
+        if animate then animate.Disabled = false end
+        if humanoid and not humanoid:FindFirstChildOfClass("Animator") then
+            local newAnimator = Instance.new("Animator")
+            newAnimator.Parent = humanoid
+        end
+    end
 end
 
-local Toggle = Tab2:Toggle({
-	Title = "Disable Animations",
-	Icon = false,
-	Type = false,
-	Value = false,
-	Callback = function(state)
-		toggleAnimation(state)
-	end
+Tab2:Toggle({
+    Title = "Disable Animations",
+    Icon = false,
+    Type = false,
+    Value = false,
+    Callback = function(state)
+        toggleAnimation(state)
+    end
 })
 
 _G.AutoFishing = false
 _G.AutoEquipRod = false
+_G.Radar = false
 _G.Instant = false
+_G.SellDelay = _G.SellDelay or 30
 _G.InstantDelay = _G.InstantDelay or 0.35
 _G.CallMinDelay = _G.CallMinDelay or 0.18
 _G.CallBackoff = _G.CallBackoff or 1.5
@@ -477,6 +520,9 @@ local function lempar()
     safeCall("lempar", function()
         net["RF/RequestFishingMinigameStarted"]:InvokeServer(-139.63, 0.996, -1761532005.497)
     end)
+    safeCall("charge2", function()
+        net["RF/ChargeFishingRod"]:InvokeServer()
+    end)
 end
 
 local function autosell()
@@ -491,35 +537,16 @@ local function autosell()
     end
 end
 
-
-
 local function instant_cycle()
-    local delay = tonumber(_G.InstantDelay) or 0.35
-    
-    -- Charge Rod (async)
-    task.spawn(function()
-        net["RF/ChargeFishingRod"]:InvokeServer()
-    end)
-
-    -- Start minigame + charge again (async)
-    task.spawn(function()
-        net["RF/RequestFishingMinigameStarted"]:InvokeServer(-139.63, 0.996, -1761532005.497)
-        net["RF/ChargeFishingRod"]:InvokeServer()
-    end)
-
-    -- One-time wait
-    task.wait(delay)
-
-    -- Catch (async)
-    task.spawn(function()
-        net["RE/FishingCompleted"]:FireServer()
-    end)
+    charge()
+    lempar()
+    task.wait(_G.InstantDelay)
+    catch()
 end
 
---------------------------------------------------------------------
 local Tab3 = Window:Tab({
     Title = "Main",
-    Icon = "gamepad-2",
+    Icon = "gamepad-2"
 })
 
 Tab3:Section({
@@ -565,7 +592,7 @@ Tab3:Toggle({
                 fishThread = task.spawn(function()
                     while _G.AutoFishing and mode == "Instant" do
                         instant_cycle()
-                        task.wait(0.05) -- lebih cepat daripada 0.35 default cycle
+                        task.wait(0.35)
                     end
                 end)
             else
@@ -592,6 +619,115 @@ Tab3:Slider({
     Value = {Min = 0.05, Max = 5, Default = 0.65},
     Callback = function(v)
         _G.InstantDelay = v
+    end
+})
+
+local Section = Tab3:Section({
+	Title = "Blantant Fishing",
+	Icon = "fish",
+	TextXAlignment = "Left",
+	TextSize = 17
+})
+
+Tab3:Divider()
+
+_G.AutoFishing = false
+_G.CancelDelay = 1.8
+_G.CompletedDelay = 1.5
+
+local RS = game:GetService("ReplicatedStorage")
+local Net = RS.Packages._Index:FindFirstChild("sleitnick_net@0.2.0").net
+
+local RE = {
+    Equip = Net:FindFirstChild("RE/EquipToolFromHotbar"),
+    Completed = Net:FindFirstChild("RE/FishingCompleted"),
+    FishCaught = Net:FindFirstChild("RE/FishCaught")
+}
+
+local RF = {
+    Cancel = Net:FindFirstChild("RF/CancelFishingInputs"),
+    Charge = Net:FindFirstChild("RF/ChargeFishingRod"),
+    Request = Net:FindFirstChild("RF/RequestFishingMinigameStarted")
+}
+
+local isFishing = false
+local latestFish = 0
+
+local function secureInvoke(fn, ...)
+    local ok = pcall(fn, ...)
+end
+
+local function EquipRod()
+    secureInvoke(function() RE.Equip:FireServer(1) end)
+end
+
+local function ChargeRod()
+    secureInvoke(function() RF.Charge:InvokeServer(math.huge) end)
+end
+
+local function RequestGame()
+    secureInvoke(function() RF.Request:InvokeServer(-139.63, 0.996, -1761532005.497) end)
+end
+
+local function Completed(delay)
+    task.wait(delay or _G.CompletedDelay)
+    secureInvoke(function() RE.Completed:FireServer() end)
+end
+
+local function CancelFishing(delay)
+    task.wait(delay or _G.CancelDelay)
+    secureInvoke(function() RF.Cancel:InvokeServer() end)
+end
+
+if RE.FishCaught then
+    RE.FishCaught.OnClientEvent:Connect(function()
+        latestFish = tick()
+        if _G.AutoFishing and isFishing then
+            Completed(0)
+        end
+    end)
+end
+
+task.spawn(function()
+    while task.wait(0.1) do
+        if _G.AutoFishing and not isFishing then
+            isFishing = true
+            EquipRod()
+            task.wait(0.05)
+            ChargeRod()
+            RequestGame()
+            if tick() - latestFish > 0.1 then
+                Completed(_G.CompletedDelay)
+            end
+            CancelFishing(_G.CancelDelay)
+            isFishing = false
+        end
+    end
+end)
+
+Tab3:Input({
+    Title = "Cancel Delay",
+    Placeholder = "1.8",
+    Callback = function(v)
+        local n = tonumber(v)
+        if n then _G.CancelDelay = n end
+    end
+})
+
+Tab3:Input({
+    Title = "Completed Delay",
+    Placeholder = "1.5",
+    Callback = function(v)
+        local n = tonumber(v)
+        if n then _G.CompletedDelay = n end
+    end
+})
+
+Tab3:Toggle({
+    Title = "Blantant Fishing",
+    Default = false,
+    Callback = function(v)
+        _G.AutoFishing = v
     end
 })
 
@@ -676,41 +812,159 @@ Tab3:Toggle({
     end
 })
 
-_G.AutoSell = false
-_G.SellDelay = _G.SellDelay or 30
-
 local Tab4 = Window:Tab({
-    Title = "Auto",
-    Icon = "gauge",
-    Locked = false,
+	Title = "Auto",
+	Icon = "circle-ellipsis"
 })
 
-Tab4:Section({     
-    Title = "Sell",
-    Icon = "dollar-sign",
-    TextXAlignment = "Left",
-    TextSize = 17,
+Tab4:Section{Title="Auto Sell",Icon="coins",TextXAlignment="Left",TextSize=17}
+
+Tab4:Divider()
+
+Tab4:Toggle{
+ Title="Auto Sell",Value=false,
+ Callback=function(v)
+  _G.AutoSell=v
+  if v then
+   if sellThread then task.cancel(sellThread)end
+   sellThread=task.spawn(autosell)
+  else
+   _G.AutoSell=false
+   if sellThread then task.cancel(sellThread)end
+   sellThread=nil
+  end
+ end
+}
+
+Tab4:Slider{
+	Title="Sell Delay",
+	Step= 1,
+	Value={
+		Min= 1,
+		Max= 120,
+		Default= 30
+	},
+	Callback=function(v)
+		_G.SellDelay=v
+	end
+}
+
+local rs = game:GetService("ReplicatedStorage")
+local players = game:GetService("Players")
+local player = players.LocalPlayer
+
+local QuestList = require(rs.Shared.Quests.QuestList)
+local QuestUtility = require(rs.Shared.Quests.QuestUtility)
+local Replion = require(rs.Packages.Replion)
+
+local repl = nil
+task.spawn(function()
+    repl = Replion.Client:WaitReplion("Data")
+end)
+
+local function GetEJ()
+    if not repl then return nil end
+    return repl:Get(QuestList.ElementJungle.ReplionPath)
+end
+
+local function GetDeepSea()
+    if not repl then return nil end
+    return repl:Get(QuestList.DeepSea.ReplionPath)
+end
+
+_G.CheckEJ = function()
+    local data = GetEJ()
+    if not data or not data.Available or not data.Available.Forever then
+        WindUI:Notify({Title="Element Jungle",Content="Quest tidak ditemukan",Duration=4,Icon="alert-circle"})
+        return
+    end
+    
+    local quests = data.Available.Forever.Quests
+    local total = #quests
+    local done = 0
+    local list = ""
+
+    for _,q in ipairs(quests) do
+        local info = QuestUtility:GetQuestData("ElementJungle","Forever",q.QuestId)
+        if info then
+            local maxVal = QuestUtility.GetQuestValue(repl,info)
+            local percent = math.floor(math.clamp(q.Progress/maxVal,0,1)*100)
+            if percent>=100 then done+=1 end
+            list = list..info.DisplayName.." - "..percent.."%\n"
+        end
+    end
+
+    local totalPercent = math.floor((done/total)*100)
+    WindUI:Notify({
+        Title="Element Jungle Progress",
+        Content="Total: "..totalPercent.."%\n\n"..list,
+        Duration=7,
+        Icon="leaf"
+    })
+end
+
+_G.CheckQuestProgress = function()
+    local data = GetDeepSea()
+    if not data or not data.Available or not data.Available.Forever then
+        WindUI:Notify({Title="Deep Sea Quest",Content="Quest tidak ditemukan",Duration=4,Icon="alert-circle"})
+        return
+    end
+
+    local quests = data.Available.Forever.Quests
+    local total = #quests
+    local done = 0
+    local list = ""
+
+    for _,q in ipairs(quests) do
+        local info = QuestUtility:GetQuestData("DeepSea","Forever",q.QuestId)
+        if info then
+            local maxVal = QuestUtility.GetQuestValue(repl,info)
+            local percent = math.floor(math.clamp(q.Progress/maxVal,0,1)*100)
+            if percent>=100 then done+=1 end
+            list = list..info.DisplayName.." - "..percent.."%\n"
+        end
+    end
+
+    local totalPercent = math.floor((done/total)*100)
+    WindUI:Notify({
+        Title="Deep Sea Progress",
+        Content="Total: "..totalPercent.."%\n\n"..list,
+        Duration=7,
+        Icon="check-circle"
+    })
+end
+
+task.spawn(function()
+    while task.wait(5) do
+        if _G.AutoNotifyEJ then _G.CheckEJ() end
+        if _G.AutoNotifyQuest then _G.CheckQuestProgress() end
+    end
+end)
+
+Tab4:Section({
+    Title = "Quest",
+    Icon = "file-question-mark",
+    TextXAlignment="Left",
+    TextSize=17
 })
 
 Tab4:Divider()
 
-Tab4:Toggle({
-    Title = "Auto Sell",
-    Value = false,
-    Callback = function(v)
-        _G.AutoSell = v
-        if v then
-            if autosellThread then task.cancel(autosellThread) end
-            autosellThread = task.spawn(autosell)
-        else
-            _G.AutoSell = false
-            if autosellThread then task.cancel(autosellThread) end
-            autosellThread = nil
-        end
+Tab4:Button({
+    Title = "Element Jungle Quest Progress",
+    Desc = "Check Element Junggle Quest Progress",
+    Callback=function()
+        _G.CheckEJ()
     end
 })
 
-Tab4:Slider({ Title = "Sell Delay", Step = 1, Value = { Min = 1, Max = 120, Default = 30 }, Callback = function(v) _G.SellDelay = v end })
+Tab4:Button({
+    Title = "Deep Sea Quest Progress",
+    Desc = "Check Deep Sea Quest Progress",
+    Callback=function()
+        _G.CheckQuestProgress()
+    end
+})
 
 local Tab5 = Window:Tab({
     Title = "Shop",
@@ -726,74 +980,75 @@ Tab5:Section({
 
 Tab5:Divider()
 
-local ReplicatedStorage = game:GetService("ReplicatedStorage")  
-local RFPurchaseFishingRod = ReplicatedStorage.Packages._Index["sleitnick_net@0.2.0"].net["RF/PurchaseFishingRod"]  
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RFPurchaseFishingRod = ReplicatedStorage.Packages._Index["sleitnick_net@0.2.0"].net["RF/PurchaseFishingRod"]
 
-local rods = {  
-    ["Luck Rod"] = 79,  
-    ["Carbon Rod"] = 76,  
-    ["Grass Rod"] = 85,  
-    ["Demascus Rod"] = 77,  
-    ["Ice Rod"] = 78,  
-    ["Lucky Rod"] = 4,  
-    ["Midnight Rod"] = 80,  
-    ["Steampunk Rod"] = 6,  
-    ["Chrome Rod"] = 7,  
-    ["Astral Rod"] = 5,  
-    ["Ares Rod"] = 126,  
+local rods = {
+    ["Luck Rod"] = 79,
+    ["Carbon Rod"] = 76,
+    ["Grass Rod"] = 85,
+    ["Demascus Rod"] = 77,
+    ["Ice Rod"] = 78,
+    ["Lucky Rod"] = 4,
+    ["Midnight Rod"] = 80,
+    ["Steampunk Rod"] = 6,
+    ["Chrome Rod"] = 7,
+    ["Astral Rod"] = 5,
+    ["Ares Rod"] = 126,
     ["Angler Rod"] = 168,
     ["Bamboo Rod"] = 258
-}  
+}
 
-local rodNames = {  
-    "Luck Rod (350 Coins)", "Carbon Rod (900 Coins)", "Grass Rod (1.5k Coins)", "Demascus Rod (3k Coins)",  
-    "Ice Rod (5k Coins)", "Lucky Rod (15k Coins)", "Midnight Rod (50k Coins)", "Steampunk Rod (215k Coins)",  
+local rodNames = {
+    "Luck Rod (350 Coins)", "Carbon Rod (900 Coins)", "Grass Rod (1.5k Coins)", "Demascus Rod (3k Coins)",
+    "Ice Rod (5k Coins)", "Lucky Rod (15k Coins)", "Midnight Rod (50k Coins)", "Steampunk Rod (215k Coins)",
     "Chrome Rod (437k Coins)", "Astral Rod (1M Coins)", "Ares Rod (3M Coins)", "Angler Rod (8M Coins)",
     "Bamboo Rod (12M Coins)"
-}  
+}
 
-local rodKeyMap = {  
-    ["Luck Rod (350 Coins)"]="Luck Rod",  
-    ["Carbon Rod (900 Coins)"]="Carbon Rod",  
-    ["Grass Rod (1.5k Coins)"]="Grass Rod",  
-    ["Demascus Rod (3k Coins)"]="Demascus Rod",  
-    ["Ice Rod (5k Coins)"]="Ice Rod",  
-    ["Lucky Rod (15k Coins)"]="Lucky Rod",  
-    ["Midnight Rod (50k Coins)"]="Midnight Rod",  
-    ["Steampunk Rod (215k Coins)"]="Steampunk Rod",  
-    ["Chrome Rod (437k Coins)"]="Chrome Rod",  
-    ["Astral Rod (1M Coins)"]="Astral Rod",  
-    ["Ares Rod (3M Coins)"]="Ares Rod",  
-    ["Angler Rod (8M Coins)"]="Angler Rod",
-    ["Bamboo Rod (12M Coins)"]="Bamboo Rod"
-}  
+local rodKeyMap = {
+    ["Luck Rod (350 Coins)"] = "Luck Rod",
+    ["Carbon Rod (900 Coins)"] = "Carbon Rod",
+    ["Grass Rod (1.5k Coins)"] = "Grass Rod",
+    ["Demascus Rod (3k Coins)"] = "Demascus Rod",
+    ["Ice Rod (5k Coins)"] = "Ice Rod",
+    ["Lucky Rod (15k Coins)"] = "Lucky Rod",
+    ["Midnight Rod (50k Coins)"] = "Midnight Rod",
+    ["Steampunk Rod (215k Coins)"] = "Steampunk Rod",
+    ["Chrome Rod (437k Coins)"] = "Chrome Rod",
+    ["Astral Rod (1M Coins)"] = "Astral Rod",
+    ["Ares Rod (3M Coins)"] = "Ares Rod",
+    ["Angler Rod (8M Coins)"] = "Angler Rod",
+    ["Bamboo Rod (12M Coins)"] = "Bamboo Rod"
+}
 
-local selectedRod = rodNames[1]  
+local selectedRod = rodNames[1]
 
-Tab5:Dropdown({  
-    Title = "Select Rod",  
-    Values = rodNames,  
-    Value = selectedRod,  
-    Callback = function(value)  
+Tab5:Dropdown({
+    Title = "Select Rod",
+    Values = rodNames,
+    Value = selectedRod,
+    Callback = function(value)
         selectedRod = value
-    end  
-})  
+        WindUI:Notify({Title="Rod Selected", Content=value, Duration=3})
+    end
+})
 
-Tab5:Button({  
-    Title="Buy Rod",  
-    Callback=function()  
-        local key = rodKeyMap[selectedRod]  
-        if key and rods[key] then  
-            local success, err = pcall(function()  
-                RFPurchaseFishingRod:InvokeServer(rods[key])  
-            end)  
-            if success then  
-                WindUI:Notify({Title="Rod Purchase", Content="Purchased "..selectedRod, Duration=3})  
-            else  
-                WindUI:Notify({Title="Rod Purchase Error", Content=tostring(err), Duration=5})  
-            end  
-        end  
-    end  
+Tab5:Button({
+    Title="Buy Rod",
+    Callback=function()
+        local key = rodKeyMap[selectedRod]
+        if key and rods[key] then
+            local success, err = pcall(function()
+                RFPurchaseFishingRod:InvokeServer(rods[key])
+            end)
+            if success then
+                WindUI:Notify({Title="Rod Purchase", Content="Purchased "..selectedRod, Duration=3})
+            else
+                WindUI:Notify({Title="Rod Purchase Error", Content=tostring(err), Duration=5})
+            end
+        end
+    end
 })
 
 Tab5:Section({
@@ -822,7 +1077,7 @@ local baitNames = {
     "Luck Bait (1k Coins)", "Midnight Bait (3k Coins)", "Nature Bait (83.5k Coins)",  
     "Chroma Bait (290k Coins)", "Dark Matter Bait (630k Coins)", "Corrupt Bait (1.15M Coins)",  
     "Aether Bait (3.7M Coins)", "Floral Bait (4M Coins)"  
-}
+}  
 
 local baitKeyMap = {  
     ["Luck Bait (1k Coins)"] = "Luck Bait",  
@@ -833,7 +1088,7 @@ local baitKeyMap = {
     ["Corrupt Bait (1.15M Coins)"] = "Corrupt Bait",  
     ["Aether Bait (3.7M Coins)"] = "Aether Bait",  
     ["Floral Bait (4M Coins)"] = "Floral Bait"  
-}
+}  
 
 local selectedBait = baitNames[1]  
 
@@ -864,7 +1119,7 @@ Tab5:Button({
 })
 
 Tab5:Section({
-    Title = "Auto Buy Weather Event",
+    Title = "Buy Weather Event",
     Icon = "cloud-drizzle",
     TextXAlignment = "Left",
     TextSize = 17,
@@ -1096,7 +1351,7 @@ local NPC_Locations = {
 
 local SelectedNPC = nil
 
-local NPCDropdown = Tab6:Dropdown({
+Tab6:Dropdown({
     Title = "Select NPC",
     Values = (function()
         local keys = {}
@@ -1484,7 +1739,7 @@ local Toggle = Tab7:Toggle({
     end
 })
 
-local Toggle = Tab7:Toggle({
+Tab7:Toggle({
     Title = "AntiAFK",
     Desc = "Prevent Roblox from kicking you when idle",
     Icon = false,
@@ -1507,7 +1762,7 @@ local Toggle = Tab7:Toggle({
 
             game:GetService("StarterGui"):SetCore("SendNotification", {
                 Title = "AntiAFK loaded!",
-                Text = "Coded By Fall",
+                Text = "Coded By Lexs",
                 Button1 = "Okey",
                 Duration = 5
             })
@@ -1521,7 +1776,7 @@ local Toggle = Tab7:Toggle({
     end
 })
 
-local Toggle = Tab7:Toggle({
+Tab7:Toggle({
     Title = "Auto Reconnect",
     Desc = "Automatic reconnect if disconnected",
     Icon = false,
@@ -1606,7 +1861,7 @@ end
 Players.PlayerAdded:Connect(function(player)
     if AutoRejoinEnabled and player ~= LocalPlayer and IsBlacklisted(player.UserId) then
         WindUI:Notify({
-            Title = "Fall Hub",
+            Title = "Lexs Hub",
             Content = player.Name .. " telah join, serverhop dalam 6 detik...",
             Duration = 6,
             Icon = "alert-triangle",
@@ -1621,7 +1876,7 @@ task.spawn(function()
             for _, player in ipairs(Players:GetPlayers()) do
                 if player ~= LocalPlayer and IsBlacklisted(player.UserId) then
                     WindUI:Notify({
-                        Title = "Fall Hub",
+                        Title = "Lexs Hub",
                         Content = player.Name .. " terdeteksi, serverhop dalam 6 detik...",
                         Duration = 6,
                         Icon = "alert-triangle",
@@ -1999,11 +2254,18 @@ Tab7:Section({
 
 Tab7:Divider()
 
-Tab7:Button({
-    Title = "Rejoin Server",
-    Desc = "Reconnect to current server",
+local Button = Tab7:Button({
+    Title = "Rejoin",
+    Desc = "rejoin to the same server",
+    Locked = false,
     Callback = function()
-        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+        local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+
+TeleportService:Teleport(game.PlaceId, player)
+
     end
 })
 
@@ -2049,8 +2311,8 @@ Tab7:Section({
 
 Tab7:Divider()
 
-local ConfigFolder = "Fall_HUB/Configs"
-if not isfolder("Fall_HUB") then makefolder("Fall_HUB") end
+local ConfigFolder = "LEXS_HUB/Configs"
+if not isfolder("LEXS_HUB") then makefolder("LEXS_HUB") end
 if not isfolder(ConfigFolder) then makefolder(ConfigFolder) end
 
 local ConfigName = "default.json"
@@ -2143,7 +2405,7 @@ Tab7:Section({
 
 Tab7:Divider()
 
-local Button = Tab7:Button({
+Tab7:Button({
     Title = "Infinite Yield",
     Desc = "Other Scripts",
     Locked = false,
@@ -2152,12 +2414,6 @@ local Button = Tab7:Button({
     end
 })
 
-Player.CharacterAdded:Connect(function(char)
-    local humanoid = char:WaitForChild("Humanoid")
-    humanoid.UseJumpPower = true
-    humanoid.JumpPower = _G.CustomJumpPower or 50
-end)
-
-getgenv().FallHubWindow = Window
+getgenv().LexsHubWindow = Window
 
 return Window
