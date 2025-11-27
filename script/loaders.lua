@@ -10,18 +10,18 @@ _G.scripts_key = "daffa"
 local streeLogo = "rbxassetid://71947103252559"
 
 local premiumKeys = {
-    "hRCWybDuIIxXeREImBbvjsEueohPzTfX",
-    "kRpXaVnqZyLhTjBfGmWcSdEoUiNpQvJ",
-    "YtHqFzPaKrXeBwNuDjMiVsGoClLrSnQe",
-    "pZxYvQmAaTrWnGfBqCkJdEoHsLuVtSiN",
-    "wJzDnQyGmTcLkVxEoPaFbSgRrUuMiZh",
-    "eBtXqNpRzVhLkCmSgJaWiFuTdOyQnPc",
-    "qYwRzEbTgLkPmDaVxHnUiFsCoSjMvN",
-    "ZkWmNtGpQrHxSaJlDyCfVuEbLoPiTn",
-    "vQbJnGzHcTtXoLwFfAqSmPrYiEdKuN",
-    "hZpRkQyUxWaJmTfVnSgCoLdEiBtNsM",
-    "rYpXvQzNaHkBtMfLcWgJoSdEuPiVnT",
-    "jhhefjjdfdjjdsfdsosvisduvhiusf",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
     "showcase_key1",
     "devoloper_access3",
     "daffa"
@@ -37,20 +37,9 @@ end
 local userType = isPremiumKey(_G.scripts_key) and "Premium" or "Freemium"
 
 local gameScripts = {
-    [2753915549] = {
-        name = "Blox Fruit",
-        free = "https://raw.githubusercontent.com/create-stree/STREE-HUB/main/Main.lua",
-        premium = "https://raw.githubusercontent.com/create-stree/STREE-HUB/main/Premium.lua"
-    },
-    [1239215938] = {
-        name = "Climb and Jump Tower",
-        free = "https://raw.githubusercontent.com/create-stree/STREE-HUB/refs/heads/main/Climb%20and%20Jump%20Tower/Main.lua",
-        premium = "https://raw.githubusercontent.com/create-stree/STREE-HUB/refs/heads/main/Climb%20and%20Jump%20Tower/Premium.lua"
-    },
     [121864768012064] = {
         name = "Fish It",
-        free = "https://raw.githubusercontent.com/albibot69-lgtm/Lexs/refs/heads/main/Fish_It/freemiumopen.colseui.lua",
-        premium = "https://raw.githubusercontent.com/albibot69-lgtm/Lexs/refs/heads/main/Fish_It/PremiumOpen.CloseUi.lua"
+        premium = "https://raw.githubusercontent.com/dapasukamancing/mancingbilek/refs/heads/main/script/openclose.lua"
     },
     [18687417158] = {
         name = "Forsaken",
@@ -137,7 +126,7 @@ local outline = layer(Color3.fromRGB(0,80,120), 0.4, 70)
 local depth1 = layer(Color3.fromRGB(0,120,200), 0.6, 60)
 local depth2 = layer(Color3.fromRGB(255,255,255), 0.9, 50)
 
-local text = "falnocure"
+local text = "Fall Hub"
 for i = 1, #text do
     local s = text:sub(1, i)
     main.Text = s
