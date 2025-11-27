@@ -122,7 +122,7 @@ local outline = layer(Color3.fromRGB(0,80,120), 0.4, 70)
 local depth1 = layer(Color3.fromRGB(0,120,200), 0.6, 60)
 local depth2 = layer(Color3.fromRGB(255,255,255), 0.9, 50)
 
-local text = "L E X S   H U B"
+local text = "F A L L   H U B"
 for i = 1, #text do
     local s = text:sub(1, i)
     main.Text = s
